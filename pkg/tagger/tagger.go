@@ -37,8 +37,8 @@ func (t *Tagger) SaveEdits(bc *parser.BufferContents) (bool, error) {
 		return false, nil
 	}
 
-	// This frame seems to conflict with IDv3
-	// so I'm stripping it.
+	// This frame seems to conflict when saving
+	// frames so I'm stripping it.
 	t.Tag.DeleteFrames("TXXX")
 
 	t.Tag.SetArtist(bc.Artist)
