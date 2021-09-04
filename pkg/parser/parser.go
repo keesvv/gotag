@@ -8,16 +8,20 @@ import (
 type Parser struct{}
 
 type BufferContents struct {
-	Artist string `yaml:"Artist"`
-	Title  string `yaml:"Title"`
-	Album  string `yaml:"Album"`
+	Artist      string `yaml:"Artist"`
+	AlbumArtist string `yaml:"AlbumArtist"`
+	Title       string `yaml:"Title"`
+	Album       string `yaml:"Album"`
+	Year        string `yaml:"Year"`
 }
 
 func (p *Parser) MarshalTag(tag *id3v2.Tag) ([]byte, error) {
 	c := &BufferContents{
-		Artist: tag.Artist(),
-		Title:  tag.Title(),
-		Album:  tag.Album(),
+		Artist:      tag.Artist(),
+		AlbumArtist: tag.GetTextFrame("TPE2").Text,
+		Title:       tag.Title(),
+		Album:       tag.Album(),
+		Year:        tag.Year(),
 	}
 
 	return yaml.Marshal(c)

@@ -32,6 +32,8 @@ func (t *Tagger) SaveEdits(bc *parser.BufferContents) error {
 	t.Tag.SetArtist(bc.Artist)
 	t.Tag.SetTitle(bc.Title)
 	t.Tag.SetAlbum(bc.Album)
+	t.Tag.SetYear(bc.Year)
+	t.Tag.AddTextFrame("TPE2", t.Tag.DefaultEncoding(), bc.AlbumArtist)
 
 	return t.Tag.Save()
 }
