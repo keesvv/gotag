@@ -17,6 +17,7 @@ type BufferContents struct {
 	Title       string `yaml:"Title"`
 	Album       string `yaml:"Album"`
 	Year        string `yaml:"Year"`
+	Front       string `yaml:"Front"`
 }
 
 func (p *Parser) GetBufferContents(tag *id3v2.Tag) *BufferContents {

@@ -2,8 +2,10 @@ package tagger
 
 import (
 	"io"
+	"io/ioutil"
 
 	"github.com/bogem/id3v2"
+	"github.com/gabriel-vasile/mimetype"
 	"github.com/keesvv/gotag/pkg/parser"
 )
 
@@ -32,6 +34,23 @@ func (t *Tagger) isChanged(newBc *parser.BufferContents) bool {
 	return *originalBc != *newBc
 }
 
+func (t *Tagger) AddFrontCover(fname string) error {
+	pic, err := ioutil.ReadFile(fname)
+	if err != nil {
+		return err
+	}
+
+	t.Tag.AddAttachedPicture(id3v2.PictureFrame{
+		Encoding:    t.Tag.DefaultEncoding(),
+		MimeType:    mimetype.Detect(pic).String(),
+		PictureType: id3v2.PTFrontCover,
+		Description: "Front cover",
+		Picture:     pic,
+	})
+
+	return nil
+}
+
 func (t *Tagger) SaveEdits(bc *parser.BufferContents) (bool, error) {
 	if !t.isChanged(bc) {
 		return false, nil
@@ -46,6 +65,14 @@ func (t *Tagger) SaveEdits(bc *parser.BufferContents) (bool, error) {
 	t.Tag.SetAlbum(bc.Album)
 	t.Tag.SetYear(bc.Year)
 	t.Tag.AddTextFrame("TPE2", t.Tag.DefaultEncoding(), bc.AlbumArtist)
+
+	if bc.Front != "" {
+		err := t.AddFrontCover(bc.Front)
+
+		if err != nil {
+			return false, err
+		}
+	}
 
 	err := t.Tag.Save()
 	if err != nil {
