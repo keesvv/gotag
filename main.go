@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"os"
 
-	id3 "github.com/bogem/id3v2"
 	"github.com/keesvv/gotag/pkg/editor"
 	"github.com/keesvv/gotag/pkg/parser"
+	"github.com/keesvv/gotag/pkg/tagger"
 )
 
 func main() {
@@ -19,13 +19,11 @@ func main() {
 
 	defer f.Close()
 
-	tag, err := id3.ParseReader(f, id3.Options{Parse: true})
+	tagger := tagger.NewTagger(f)
 
-	if err != nil {
+	if err := tagger.Init(); err != nil {
 		panic(err)
 	}
-
-	defer tag.Close()
 
 	edt := editor.GetPreferred()
 
@@ -34,7 +32,7 @@ func main() {
 		panic(err)
 	}
 
-	edt.WriteDefaults(buf, tag)
+	edt.WriteDefaults(buf, tagger)
 
 	raw, err := edt.Edit(buf)
 

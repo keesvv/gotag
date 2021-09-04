@@ -5,8 +5,8 @@ import (
 	"os"
 	"os/exec"
 
-	id3 "github.com/bogem/id3v2"
 	"github.com/keesvv/gotag/pkg/parser"
+	"github.com/keesvv/gotag/pkg/tagger"
 )
 
 type Editor struct {
@@ -35,9 +35,9 @@ func (edt *Editor) GetTempBuffer() (*os.File, error) {
 	return os.CreateTemp(TMP_PATH, "buf-*.yml")
 }
 
-func (edt *Editor) WriteDefaults(buf *os.File, tag *id3.Tag) error {
+func (edt *Editor) WriteDefaults(buf *os.File, tagger *tagger.Tagger) error {
 	p := parser.Parser{}
-	b, err := p.MarshalTag(tag)
+	b, err := p.MarshalTag(tagger.Tag)
 
 	if err != nil {
 		return err
