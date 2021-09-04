@@ -22,3 +22,10 @@ func (p *Parser) MarshalTag(tag *id3v2.Tag) ([]byte, error) {
 
 	return yaml.Marshal(c)
 }
+
+func (p *Parser) UnmarshalContents(raw []byte) (*BufferContents, error) {
+	contents := &BufferContents{}
+	err := yaml.Unmarshal(raw, contents)
+
+	return contents, err
+}

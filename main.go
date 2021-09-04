@@ -6,6 +6,7 @@ import (
 
 	id3 "github.com/bogem/id3v2"
 	"github.com/keesvv/gotag/pkg/editor"
+	"github.com/keesvv/gotag/pkg/parser"
 )
 
 func main() {
@@ -35,7 +36,14 @@ func main() {
 
 	edt.WriteDefaults(buf, tag)
 
-	contents, err := edt.Edit(buf)
+	raw, err := edt.Edit(buf)
+
+	if err != nil {
+		panic(err)
+	}
+
+	p := parser.Parser{}
+	contents, err := p.UnmarshalContents(raw)
 
 	if err != nil {
 		panic(err)
