@@ -13,8 +13,6 @@ type Editor struct {
 	Exec string
 }
 
-const TMP_PATH = "/tmp/gotag"
-
 func GetPreferred() *Editor {
 	editorEnv, _ := os.LookupEnv("EDITOR")
 

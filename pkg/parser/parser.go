@@ -3,7 +3,7 @@ package parser
 import (
 	"bytes"
 	"fmt"
-	"path"
+	path "path/filepath"
 
 	"github.com/bogem/id3v2"
 	"gopkg.in/yaml.v2"
