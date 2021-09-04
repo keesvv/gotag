@@ -33,7 +33,7 @@ func main() {
 		panic(err)
 	}
 
-	buf.Write([]byte("Test\n"))
+	edt.WriteDefaults(buf, tag)
 
 	contents, err := edt.Edit(buf)
 

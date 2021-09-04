@@ -4,6 +4,8 @@ import (
 	"io"
 	"os"
 	"os/exec"
+
+	id3 "github.com/bogem/id3v2"
 )
 
 type Editor struct {
@@ -30,6 +32,11 @@ func (edt *Editor) GetTempBuffer() (*os.File, error) {
 	}
 
 	return os.CreateTemp(TMP_PATH, "buf-*")
+}
+
+func (edt *Editor) WriteDefaults(buf *os.File, tag *id3.Tag) error {
+	_, err := buf.Write([]byte(tag.Artist()))
+	return err
 }
 
 func (edt *Editor) Edit(buf *os.File) ([]byte, error) {
