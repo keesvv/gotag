@@ -1,8 +1,10 @@
 package tagger
 
 import (
+	"fmt"
 	"io"
 	"io/ioutil"
+	"strings"
 
 	"github.com/bogem/id3v2"
 	"github.com/gabriel-vasile/mimetype"
@@ -40,9 +42,15 @@ func (t *Tagger) AddFrontCover(fname string) error {
 		return err
 	}
 
+	mime := mimetype.Detect(pic).String()
+
+	if !strings.HasPrefix(mime, "image/") {
+		return fmt.Errorf("not an image")
+	}
+
 	t.Tag.AddAttachedPicture(id3v2.PictureFrame{
 		Encoding:    t.Tag.DefaultEncoding(),
-		MimeType:    mimetype.Detect(pic).String(),
+		MimeType:    mime,
 		PictureType: id3v2.PTFrontCover,
 		Description: "Front cover",
 		Picture:     pic,
