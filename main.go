@@ -47,6 +47,9 @@ func main() {
 		panic(err)
 	}
 
-	fmt.Printf("File contents: %v\n", contents)
+	if err := tagger.SaveEdits(contents); err != nil {
+		panic(err)
+	}
+
 	fmt.Println("\033[1m✔ Saved\033[0m")
 }
