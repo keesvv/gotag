@@ -2,6 +2,8 @@ package parser
 
 import (
 	"bytes"
+	"fmt"
+	"path"
 
 	"github.com/bogem/id3v2"
 	"gopkg.in/yaml.v2"
@@ -27,7 +29,7 @@ func (p *Parser) GetBufferContents(tag *id3v2.Tag) *BufferContents {
 	}
 }
 
-func (p *Parser) MarshalTag(tag *id3v2.Tag) ([]byte, error) {
+func (p *Parser) MarshalTag(fname string, tag *id3v2.Tag) ([]byte, error) {
 	c := p.GetBufferContents(tag)
 
 	res, err := yaml.Marshal(c)
@@ -35,8 +37,13 @@ func (p *Parser) MarshalTag(tag *id3v2.Tag) ([]byte, error) {
 		return nil, err
 	}
 
-	// Strip unnecessary quotes from empty strings
-	return bytes.ReplaceAll(res, []byte("\"\""), []byte("")), nil
+	header := []byte(fmt.Sprintf("# %s\n", path.Base(fname)))
+
+	// Combine the header with the marshalled result
+	// Also strip unnecessary quotes from empty strings
+	b := append(header, bytes.ReplaceAll(res, []byte("\"\""), []byte(""))...)
+
+	return b, nil
 }
 
 func (p *Parser) UnmarshalContents(raw []byte) (*BufferContents, error) {

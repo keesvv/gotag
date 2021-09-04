@@ -35,9 +35,9 @@ func (edt *Editor) GetTempBuffer() (*os.File, error) {
 	return os.CreateTemp(TMP_PATH, "buf-*.yml")
 }
 
-func (edt *Editor) WriteDefaults(buf *os.File, tagger *tagger.Tagger) error {
+func (edt *Editor) WriteDefaults(fname string, buf *os.File, tagger *tagger.Tagger) error {
 	p := parser.Parser{}
-	b, err := p.MarshalTag(tagger.Tag)
+	b, err := p.MarshalTag(fname, tagger.Tag)
 
 	if err != nil {
 		return err

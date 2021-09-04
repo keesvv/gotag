@@ -32,7 +32,7 @@ func main() {
 		panic(err)
 	}
 
-	edt.WriteDefaults(buf, tagger)
+	edt.WriteDefaults(fname, buf, tagger)
 
 	raw, err := edt.Edit(buf)
 
