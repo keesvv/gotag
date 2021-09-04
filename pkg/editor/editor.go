@@ -12,6 +12,18 @@ type Editor struct {
 
 const TMP_PATH = "/tmp/gotag"
 
+func GetPreferred() *Editor {
+	editorEnv, _ := os.LookupEnv("EDITOR")
+
+	if editorEnv == "" {
+		editorEnv = "vim"
+	}
+
+	return &Editor{
+		Exec: editorEnv,
+	}
+}
+
 func (edt *Editor) GetTempBuffer() (*os.File, error) {
 	if err := os.Mkdir(TMP_PATH, 0700); !os.IsExist(err) {
 		return nil, err

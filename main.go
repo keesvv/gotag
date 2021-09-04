@@ -26,7 +26,7 @@ func main() {
 
 	defer tag.Close()
 
-	edt := editor.Editor{Exec: "nvim"}
+	edt := editor.GetPreferred()
 
 	buf, err := edt.GetTempBuffer()
 	if err != nil {
