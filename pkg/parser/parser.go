@@ -15,14 +15,18 @@ type BufferContents struct {
 	Year        string `yaml:"Year"`
 }
 
-func (p *Parser) MarshalTag(tag *id3v2.Tag) ([]byte, error) {
-	c := &BufferContents{
+func (p *Parser) GetBufferContents(tag *id3v2.Tag) *BufferContents {
+	return &BufferContents{
 		Artist:      tag.Artist(),
 		AlbumArtist: tag.GetTextFrame("TPE2").Text,
 		Title:       tag.Title(),
 		Album:       tag.Album(),
 		Year:        tag.Year(),
 	}
+}
+
+func (p *Parser) MarshalTag(tag *id3v2.Tag) ([]byte, error) {
+	c := p.GetBufferContents(tag)
 
 	return yaml.Marshal(c)
 }

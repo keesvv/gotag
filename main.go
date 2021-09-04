@@ -47,8 +47,11 @@ func main() {
 		panic(err)
 	}
 
-	if err := tagger.SaveEdits(contents); err != nil {
+	if isChanged, err := tagger.SaveEdits(contents); err != nil {
 		panic(err)
+	} else if !isChanged {
+		fmt.Println("Tag unchanged.")
+		return
 	}
 
 	fmt.Println("\033[1m✔ Saved\033[0m")
